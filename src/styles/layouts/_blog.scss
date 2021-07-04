@@ -1,0 +1,307 @@
+$gray: #f2f4f7;
+$grayLighter: #e5e6e7;
+$blue: #1f75e6;
+$blueLight: #76a6e6c4;
+$grayDark: #afb0b4;
+$white: #fff;
+$yellow: #e2c234;
+$green: #338d33;
+$red: #ffff;
+
+%navigation-display {
+  display: inline-flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+}
+%checklist-display {
+  display: inline-flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+/**********
+ * navbar *
+ **********/
+.navbar {
+  display: flex;
+  background-color: $blue;
+  width: 100%;
+  padding: 10px 15px;
+  &__header {
+    @extend %navigation-display;
+    margin-right: auto;
+    background-color: $blueLight;
+    padding: 0px 8px;
+  }
+  &__login {
+    @extend %navigation-display;
+    margin-left: auto;
+    button {
+      border: 1px solid $white;
+      padding: 8px 10px;
+      background-color: transparent;
+      color: $white;
+      border-radius: 4px;
+    }
+  }
+}
+
+/**********************
+ * main container box *
+ **********************/
+.container {
+  width: 100%;
+  padding: 0 15px;
+  background-color: $gray;
+  /**********
+ * search *
+ **********/
+  .search {
+    background-color: $white;
+    padding: 15px;
+    margin: 10px 0px;
+    input {
+      width: 100%;
+      padding: 8px 15px;
+      border: 1px solid $gray;
+      color: $white;
+      outline: none;
+    }
+  }
+  /***************
+ * create blog *
+ ***************/
+  .create-blog {
+    background-color: $white;
+    padding: 15px;
+    button {
+      background-color: $blue;
+      padding: 8px 15px;
+      border: none;
+      color: $white;
+    }
+  }
+  /***************
+ * blog-list   *
+ ***************/
+  .blog-list {
+    h3 {
+      background-color: $grayDark;
+      padding: 8px 15px;
+      border: none;
+      width: 130px;
+      border-radius: 4px;
+      span {
+        background-color: $blue;
+        padding: 0px 5px;
+        margin-left: 5px;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+.blog-post {
+  background-color: $white;
+  padding: 15px;
+  margin: 10px 0px;
+  line-height: 25px;
+  .post-title {
+    color: $grayDark;
+    display: inline-block;
+    padding-right: 5px;
+    font-size: 20px;
+  }
+  .user-name {
+    color: $white;
+    background-color: $yellow;
+    padding: 0px 4px;
+    border-radius: 4px;
+  }
+  .post-description {
+    font-size: 12px;
+  }
+  .detail-button {
+    border: 1px solid $white;
+    padding: 8px 10px;
+    background-color: $blue;
+    color: $white;
+    border-radius: 4px;
+  }
+}
+
+.profile {
+  border-radius: 5px;
+  padding: 20px;
+  .profile__title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
+    outline: none;
+  }
+
+  input[type="submit"] {
+    background-color: $blue;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+}
+
+/**********
+   * header *
+   **********/
+// &__title {
+//   text-align: center;
+//   padding-bottom: 25px;
+//   i,
+//   h2 {
+//     vertical-align: middle;
+//     display: inline-block;
+//   }
+//   &--color {
+//     color: $blue;
+//   }
+//   &--size {
+//     font-size: 26px;
+//     font-weight: 600;
+//     i {
+//       font-size: 40px;
+//     }
+//     h2 {
+//       text-decoration: underline;
+//     }
+//   }
+// }
+
+/****************
+   * add new item *
+   ***************/
+// &__add-new-item {
+//   display: flex;
+//   flex-direction: row;
+//   padding: 7px;
+//   border-radius: 5px;
+//   margin: 30px 60px;
+//   background-color: $white;
+//   input[type="text"] {
+//     flex-grow: 2;
+//     border: none;
+//     font-size: 16px;
+//   }
+//   input:focus {
+//     outline: none;
+//   }
+//   button {
+//     border: none;
+//     outline: none;
+//     background-color: $blue;
+//     color: $white;
+//     padding: 10px 15px;
+//     border-radius: 5px;
+//   }
+//   button:hover {
+//     cursor: pointer;
+//   }
+// }
+
+/***********************
+   * filter sort section *
+   **********************/
+// &__items-filter-sort {
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: flex-end;
+//   border-top: 2px solid $grayLighter;
+//   padding: 30px 60px;
+//   font-size: 12px;
+//   .filter {
+//     padding-right: 15px;
+//   }
+//   select {
+//     border: 1px solid $grayLighter;
+//     padding: 5px;
+//     border-radius: 5px;
+//     margin-left: 4px;
+//     option {
+//       padding: 4px;
+//       font-size: 12px;
+//     }
+//   }
+//   .select:focus {
+//     box-shadow: 0 0 4px $blue;
+//     outline: none;
+//   }
+//   .sort {
+//     i {
+//       color: $green;
+//     }
+//   }
+// }
+/*******************
+   * checklist items *
+   *******************/
+// &__checklist-items {
+//   padding: 30px 60px;
+//   color: $grayDark;
+//   .checklist-row {
+//     display: flex;
+//     margin-bottom: 25px;
+//     align-items: center;
+//     .form-group {
+//       @extend %checklist-display;
+//       font-size: 16px;
+//       margin-right: auto;
+//       display: block;
+//       width: calc(100% - 115px);
+//       .edit-input {
+//         width: calc(100% - 220px);
+//         padding: 5px 7px;
+//         background-color: $white;
+//         border: none;
+//         outline: none;
+//         font-size: 16px;
+//         color: $grayDark;
+//         border-radius: 4px;
+//       }
+//     }
+//     .icons-group {
+//       visibility: hidden;
+//       .icon {
+//         padding-left: 25px;
+//         font-size: 14px;
+//       }
+//       .icon-pen {
+//         color: $green;
+//       }
+//       .icon-trash {
+//         color: $red;
+//       }
+
+//     }
+//     &:hover .icons-group {
+//       visibility: visible;
+//     }
+//   }
+// }
+
+.edit-input {
+  margin-left: 35px;
+  display: inline-block;
+  vertical-align: middle;
+}
