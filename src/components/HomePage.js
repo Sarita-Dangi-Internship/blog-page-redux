@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import NavBar from "./NavBar";
-import * as blogService from "../services/blogs";
 import { connect } from "react-redux";
-import { fetchBlogs } from "../actions/actions";
+import { fetchBlogs, searchBlog } from "../actions/actions";
 
 class HomePage extends Component {
   state = {
@@ -20,11 +19,8 @@ class HomePage extends Component {
     this.setState({
       search: event.target.value,
     });
-    const search = event.target.value;
-    const filteredSearch = this.props.blogs.filter((blog) => {
-      return blog.title.toLowerCase().includes(search.toLowerCase());
-    });
-    // this.setState({blogs: filteredSearch });
+    
+    this.props.searchBlog(this.state.search);
   };
 
   render() {
@@ -42,8 +38,8 @@ class HomePage extends Component {
               type="search"
               id="search"
               placeholder="Search Blog"
-              // value={this.search}
-              // onChange={this.handleSearch}
+              value={this.search}
+              onChange={this.handleSearch}
             ></input>
           </div>
           <div className="blog-list">
@@ -88,4 +84,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { fetchBlogs })(HomePage);
+export default connect(mapStateToProps, { fetchBlogs, searchBlog })(HomePage);
