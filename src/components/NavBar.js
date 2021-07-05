@@ -3,35 +3,39 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { signIn, signOut } from "../actions/actions";
 
-import {
-  refreshTokenSetup,
-  getAccessToken,
-  setAccessToken,
-} from "../utils/token";
-
 class NavBar extends Component {
-  // handleInput = (input) => {
-  //   this.setState({ input });
-  // };
-
   render() {
-    const { isSignedIn } = this.props;
+    const { isSignedIn, userData } = this.props;
 
     return (
       <div className="navbar">
         <h1 className="navbar__header">Blog Post</h1>
-        <div className="navbar__login" >
+        <div className="navbar__login">
           {isSignedIn ? (
             <Link to="/logout">
-              <button>Logout</button>
+              <button onClick={() => this.props.signOut()}>Logout</button>
             </Link>
           ) : (
             <>
               <Link to="/login">
-                <button>Login/signup</button>
+                <button onClick={() => this.props.signIn()}>
+                  Login/signup
+                </button>
               </Link>
-             
             </>
+          )}
+
+          {isSignedIn ? (
+            <div className="user">
+              <img
+                src={userData.image}
+                alt="user-image"
+                className="user-image"
+              />
+              <h1 className="user-name">{userData.name}</h1>
+            </div>
+          ) : (
+            <></>
           )}
         </div>
       </div>
