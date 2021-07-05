@@ -1,27 +1,30 @@
 import React, { Component } from "react";
 import NavBar from "./NavBar";
 import * as blogService from "../services/blogs";
+import { connect } from "react-redux";
+import { fetchBlogs } from "../actions/actions";
 
-export default class HomePage extends Component {
+class HomePage extends Component {
   state = {
-    blogs: [],
+    search: "",
   };
 
   componentDidMount() {
-    this.fetchBlogs();
+    this.props.fetchBlogs();
   }
 
   /**
-   * Function to get list of all blogs
+   * function to handle search input
    */
-  fetchBlogs = async () => {
-    try {
-      const response = await blogService.fetchPosts();
-      this.setState({ blogs: response.data.data });
-      console.log(this.state.blogs);
-    } catch (error) {
-      console.log("error");
-    }
+  handleSearch = (event) => {
+    this.setState({
+      search: event.target.value,
+    });
+    const search = event.target.value;
+    const filteredSearch = this.props.blogs.filter((blog) => {
+      return blog.title.toLowerCase().includes(search.toLowerCase());
+    });
+    // this.setState({blogs: filteredSearch });
   };
 
   render() {
@@ -35,22 +38,35 @@ export default class HomePage extends Component {
             </button>
           </div>
           <div className="search">
-            <input placeholder="Search Blog"></input>
+            <input
+              type="search"
+              id="search"
+              placeholder="Search Blog"
+              // value={this.search}
+              // onChange={this.handleSearch}
+            ></input>
           </div>
           <div className="blog-list">
             <h3>
-              All Blogs <span>{this.state.blogs.length}</span>
+              All Blogs <span>{this.props.blogs.length}</span>
             </h3>
-            {this.state.blogs.map((blog) => (
+            {this.props.blogs.map((blog) => (
               <div key={blog._id} className="blog-post">
                 <h1 className="post-title">{blog.title}</h1>
                 <span className="user-name">{blog.users.name}</span>
-                <p className="post-description">Description: {blog.description}</p>
+                <p className="post-description">
+                  Description: {blog.description}
+                </p>
                 <button
                   onClick={() =>
                     this.props.history.push({
                       pathname: "/postdetail",
-                      state: blog._id,
+                      state: {
+                        id: blog._id,
+                        title: blog.title,
+                        user: blog.users.name,
+                        description: blog.description,
+                      },
                     })
                   }
                   className="detail-button"
@@ -65,3 +81,11 @@ export default class HomePage extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    blogs: state.auth.blogs,
+  };
+};
+
+export default connect(mapStateToProps, { fetchBlogs })(HomePage);
