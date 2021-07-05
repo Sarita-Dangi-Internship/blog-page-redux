@@ -4,19 +4,36 @@ import { GoogleLogin, GoogleLogout } from "react-google-login";
 import { updateUserData, increment } from "../actions/actions";
 import { connect } from "react-redux";
 
+import * as todoService from "../services/blogs";
+
 class Login extends Component {
   onSuccess = (response) => {
     console.log("login success", response);
-    setAccessToken(response.accessToken);
-    console.log("token", getAccessToken());
-    this.props.updateUserData(response);
+    const authLogin = async () => {
+      try {
+        const res = await todoService.authLogin({
+          token: response.tokenId,
+        });
+
+        const data = res.data.data;
+        console.log("login auth", data);
+        setAccessToken(data.accessToken);
+        console.log("token", getAccessToken());
+        this.props.updateUserData(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    authLogin();
   };
 
   onFailure = (response) => {
     console.log("login failed", response);
   };
+
   render() {
-    console.log("data", this.props.userData);
+    console.log("render userdata", this.props.userData);
     return (
       <>
         <div>
@@ -29,8 +46,6 @@ class Login extends Component {
             isSignedIn={true}
           />
         </div>
-        {/* <span>{this.props.userData && this.props.userData.name}</span>
-        <span>{this.props.userData && this.props.userData.image}</span> */}
         <button onClick={() => this.props.increment()}>CLick</button>
       </>
     );
