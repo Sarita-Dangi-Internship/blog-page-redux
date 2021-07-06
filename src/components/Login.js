@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import {Redirect} from 'react-router-dom'
 import { getAccessToken, setAccessToken } from "../utils/token";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import { updateUserData, increment } from "../actions/actions";
-import { connect } from "react-redux";
 
 import * as todoService from "../services/blogs";
 
@@ -14,7 +15,6 @@ class Login extends Component {
         const res = await todoService.authLogin({
           token: response.tokenId,
         });
-
         const data = res.data.data;
         console.log("login auth", data);
         setAccessToken(data.accessToken);
