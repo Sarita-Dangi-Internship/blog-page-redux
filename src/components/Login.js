@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {Redirect} from 'react-router-dom'
 import { getAccessToken, setAccessToken } from "../utils/token";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import { updateUserData, increment } from "../actions/actions";
