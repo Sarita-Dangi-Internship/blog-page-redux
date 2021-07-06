@@ -44,6 +44,17 @@ export const searchBlog = (searchKey) => async (dispatch) => {
   }
 };
 
+export const addNewPost = (title, description, users) => async (dispatch) => {
+  try {
+    const response = await blogService.addNewPost(title, description, users);
+    dispatch({ type: actions.ADD_NEW_POST, payload: response.data.data });
+
+    return Promise.resolve(response.data);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const increment = () => {
   return {
     type: actions.INCREMENT,
