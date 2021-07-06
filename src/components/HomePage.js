@@ -15,7 +15,7 @@ class HomePage extends Component {
   };
 
   componentDidMount() {
-    this.props.fetchBlogs();
+    this.props.getAllBlogs();
   }
 
   handleOnEdit = () => {
@@ -26,7 +26,6 @@ class HomePage extends Component {
     this.setState({ [event.target.id]: event.target.value });
     console.log("input", event.target.value);
   };
-
 
   handleOnSave = async () => {
     // this.props
@@ -48,7 +47,7 @@ class HomePage extends Component {
     };
 
     try {
-      const response = await blogService.addNewPost(data);
+      const response = await this.props.createNewPost(data);
       console.log(response);
 
       this.setState({
@@ -73,38 +72,51 @@ class HomePage extends Component {
       search: event.target.value,
     });
 
-    this.props.searchBlog(this.state.search);
+    this.props.searchPosts(this.state.search);
   };
 
   render() {
     const { isCreatePost, title, description } = this.state;
+    const { isSignedIn } = this.props;
+    console.log("blogs", this.props.blogs)
     return (
       <>
         <NavBar />
         <div className="container">
-          {isCreatePost ? (
-            <div className="blog-post">
-              <label htmlFor="title">Title</label>
-              <input id="title" value={title} onChange={this.handleOnChange} />
-              <label htmlFor="description">Description</label>
-              <input
-                id="description"
-                value={description}
-                onChange={this.handleOnChange}
-              />
-              <button className="button" onClick={this.handleOnSave}>
-                Save
-              </button>
-              <button className="button" onClick={() => this.handleOnCancel()}>
-                Cancel
-              </button>
-            </div>
+          {isSignedIn ? (
+            isCreatePost ? (
+              <div className="blog-post">
+                <label htmlFor="title">Title</label>
+                <input
+                  id="title"
+                  value={title}
+                  onChange={this.handleOnChange}
+                />
+                <label htmlFor="description">Description</label>
+                <input
+                  id="description"
+                  value={description}
+                  onChange={this.handleOnChange}
+                />
+                <button className="button" onClick={this.handleOnSave}>
+                  Save
+                </button>
+                <button
+                  className="button"
+                  onClick={() => this.handleOnCancel()}
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <div className="create-blog">
+                <button onClick={() => this.handleOnEdit()}>
+                  <i className="fas fa-plus"></i>Create New Blog
+                </button>
+              </div>
+            )
           ) : (
-            <div className="create-blog">
-              <button onClick={() => this.handleOnEdit()}>
-                <i className="fas fa-plus"></i>Create New Blog
-              </button>
-            </div>
+            <></>
           )}
 
           <div className="search">
@@ -156,9 +168,15 @@ const mapStateToProps = (state) => {
   return {
     blogs: state.auth.blogs,
     userData: state.auth.userData,
+    isSignedIn: state.auth.isSignedIn,
   };
 };
 
-export default connect(mapStateToProps, { fetchBlogs, searchBlog, addNewPost })(
-  HomePage
-);
+const mapDispatchToProps = (dispatch) => ({
+  createNewPost: (title, description, users) =>
+    dispatch(addNewPost(title, description, users)),
+  getAllBlogs: () => dispatch(fetchBlogs()),
+  searchPosts: (searchKey) => dispatch(searchBlog(searchKey)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
