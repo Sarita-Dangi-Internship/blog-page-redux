@@ -1,11 +1,8 @@
 import http from "../utils/http";
 import config from "../config";
-import authHeader from "./auth-header";
 import { getAccessToken } from "../utils/token";
 
 const { api } = config;
-
-
 
 /**
  *Function to get all blogs
@@ -31,6 +28,7 @@ export async function authLogin(token) {
 
   return response;
 }
+
 /**
  *Function to create new post
  *
@@ -64,7 +62,6 @@ export async function fetchPostById(postId) {
   return response;
 }
 
-
 export async function searchBlog(searchKey) {
   const url = `${api.endpoints.posts}?searchKey=${searchKey}`;
   const response = await http.get(url);
@@ -72,20 +69,57 @@ export async function searchBlog(searchKey) {
   return response;
 }
 
+/**
+ *Function to edit post
+ *
+ * @export
+ * @param {*} postId
+ * @param {*} data
+ * @return {*}
+ */
+export async function updatePost(postId, data) {
+  const userToken = getAccessToken();
 
+  const url = `${api.endpoints.posts}/${postId}`;
+  const response = await http.put(url, data, {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  });
+  return response;
+}
 
-// /**
-//  *Function to edit post
-//  *
-//  * @export
-//  * @param {*} taskId
-//  * @param {*} data
-//  * @return {*}
-//  */
-// export async function editTaskById(taskId, data) {
-//   const url = `${api.endpoints.todo}/${taskId}`;
-//   const response = await http.patch(url, data);
+/**
+ *Function to delete post
+ */
+export async function deletePost(postId) {
+  const userToken = getAccessToken();
 
-//   return response;
-// }
+  const url = `${api.endpoints.posts}/${postId}`;
+  const response = await http.delete(url, {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  });
 
+  return response;
+}
+
+/**
+ *Function to create new post
+ *
+ * @export
+ * @param {*} data
+ */
+export async function addNewComment(id,data) {
+  const userToken = getAccessToken();
+  console.log(userToken);
+  const url = `${api.endpoints.posts}`;
+  const response = await http.post(url, data, {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  });
+
+  return response;
+}
