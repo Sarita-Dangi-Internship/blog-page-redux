@@ -1,6 +1,6 @@
 import { Component } from "react";
 import * as blogService from "../services/blogs";
-import { deletePost } from "../actions/actions";
+import { deletePost, updatePost } from "../actions/actions";
 import { connect } from "react-redux";
 import NavBar from "./NavBar";
 
@@ -8,6 +8,8 @@ class DetailPost extends Component {
   state = {
     comments: [],
     iseditMode: false,
+    title: "",
+    description: "",
   };
 
   componentDidMount() {
@@ -22,13 +24,27 @@ class DetailPost extends Component {
     this.setState({ isEditMode: false });
   };
 
-  handleOnUpdate = (id) => {
-    // this.props.editTask(this.props.id, this.state.title);
-    this.setState({ isEditMode: false });
-  };
-
   handleOnChange = (event) => {
     this.setState({ [event.target.id]: event.target.value });
+    console.log("update", event.target.value);
+  };
+
+  handleOnUpdate = async (id) => {
+    const data = {
+      title: this.state.title,
+      description: this.state.description,
+    };
+
+    try {
+      const response = await this.props.updateBlog(
+        this.props.history.location.state.id,
+        data
+      );
+      console.log(response);
+    } catch (error) {
+      console.log("error");
+    }
+    this.setState({ isEditMode: false });
   };
 
   handleOnDelete = async (id) => {
@@ -40,7 +56,6 @@ class DetailPost extends Component {
       console.log("error");
     }
   };
-  
 
   /**
    * Function to get list of all blogs
@@ -56,8 +71,9 @@ class DetailPost extends Component {
   };
 
   render() {
-    console.log("to", this.props.history.location.state.id);
-    const { id, title, user, description } = this.props.history.location.state;
+    const { id, title, user, description, userId } =
+      this.props.history.location.state;
+    const {isSignedIn, userData} = this.props
     return (
       <>
         <NavBar />
@@ -67,20 +83,23 @@ class DetailPost extends Component {
               <h1 className="post-title"> {title}</h1>
               <span className="user-name"> {user}</span>
               <p className="post-description">Description: {description}:</p>
-              <div className="icons">
-                <span>
-                  <i
-                    className="fas fa-trash"
-                    onClick={()=>this.handleOnDelete(id)}
-                  ></i>
-                </span>
-                <span>
-                  <i
-                    className="fas fa-pen"
-                    onClick={() => this.handleOnEdit(id)}
-                  ></i>
-                </span>
-              </div>
+
+              {isSignedIn && userId === userData.id && (
+                <div className="icons">
+                  <span>
+                    <i
+                      className="fas fa-trash"
+                      onClick={() => this.handleOnDelete(id)}
+                    ></i>
+                  </span>
+                  <span>
+                    <i
+                      className="fas fa-pen"
+                      onClick={() => this.handleOnEdit(id)}
+                    ></i>
+                  </span>
+                </div>
+              )}
             </div>
           ) : (
             <div className="blog-post">
@@ -168,6 +187,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   deleteBlog: (id) => dispatch(deletePost(id)),
+  updateBlog: (id, data) => dispatch(updatePost(id, data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailPost);
