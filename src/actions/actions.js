@@ -55,6 +55,35 @@ export const addNewPost = (title, description, users) => async (dispatch) => {
   }
 };
 
+export const updatePost = (id, data) => async (dispatch) => {
+  try {
+    const res = await blogService.updatePost(id, data);
+
+    dispatch({
+      type: actions.UPDATE_POST,
+      payload: data,
+    });
+
+    return Promise.resolve(res.data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+
+export const deletePost = (id) => async (dispatch) => {
+  try {
+    await blogService.deletePost(id);
+
+    dispatch({
+      type: actions.DELETE_POST,
+      payload: id,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const increment = () => {
   return {
     type: actions.INCREMENT,
