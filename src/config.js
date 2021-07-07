@@ -3,7 +3,8 @@ const config = {
     endpoints: {
       posts: "posts",
       login:"auth/login",
-      subcomments: "api/comments/",
+      comments: "comments",
+      subComments: "sub-comments",
     },
   },
   baseURI: "http://52.43.200.182:8000/api/",
