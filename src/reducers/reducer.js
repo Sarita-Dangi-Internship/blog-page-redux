@@ -5,9 +5,8 @@ const initialState = {
   isSignedIn: false,
   userData: null,
   searchInput: null,
-  blogs:[],
+  blogs: [],
   increment: 0,
-
 };
 
 export default (state = initialState, action) => {
@@ -29,6 +28,15 @@ export default (state = initialState, action) => {
 
     case actions.ADD_NEW_POST:
       return { ...state, blogs: [...state.blogs, action.payload] };
+
+    case actions.UPDATE_POST:
+      return { ...state, blogs: [...state.blogs, ...action.payload] };
+    
+    case actions.DELETE_POST:
+      return { ...state };
+    
+    case actions.POST_COMMENTS:
+      return { ...state };
 
     case actions.INCREMENT:
       return { increment: state.increment + 1 };
