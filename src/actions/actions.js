@@ -1,5 +1,6 @@
 import * as actions from "../constants/ActionTypes";
 import * as blogService from "../services/blogs";
+import { _COMMENTS } from './../constants/ActionTypes';
 
 export const signIn = () => {
   return {
@@ -48,6 +49,16 @@ export const addNewPost = (title, description, users) => async (dispatch) => {
   try {
     const response = await blogService.addNewPost(title, description, users);
     dispatch({ type: actions.ADD_NEW_POST, payload: response.data.data });
+
+    return Promise.resolve(response.data);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+export const addNewComment = (id,comment) => async (dispatch) => {
+  try {
+    const response = await blogService.addNewComment(id, comment);
+    dispatch({ type: actions.ADD_NEW_COMMENT, payload: response.data.data });
 
     return Promise.resolve(response.data);
   } catch (error) {

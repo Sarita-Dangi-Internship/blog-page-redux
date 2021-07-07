@@ -1,12 +1,13 @@
 import { Component } from "react";
 import * as blogService from "../services/blogs";
-import { deletePost, updatePost } from "../actions/actions";
+import { deletePost, updatePost, addNewComment } from "../actions/actions";
 import { connect } from "react-redux";
 import NavBar from "./NavBar";
 
 class DetailPost extends Component {
   state = {
     comments: [],
+    comment: "",
     iseditMode: false,
     title: "",
     description: "",
@@ -70,10 +71,30 @@ class DetailPost extends Component {
     }
   };
 
+  handleOnComment = async () => {
+    const data = {
+      description: this.state.comment,
+    };
+
+    try {
+      const response = await this.props.createNewComment(
+        this.props.history.location.state.id,
+        data
+      );
+      console.log(response);
+      this.setState({
+        comment: "",
+      });
+    } catch (error) {
+      console.log("error");
+    }
+    this.fetchComments(this.props.history.location.state.id);
+  };
+
   render() {
     const { id, title, user, description, userId } =
       this.props.history.location.state;
-    const {isSignedIn, userData} = this.props
+    const { isSignedIn, userData } = this.props;
     return (
       <>
         <NavBar />
@@ -131,9 +152,16 @@ class DetailPost extends Component {
           )}
 
           <div>
-            <h3>Add new comment</h3>
-            <input placeholder="new comment here"></input>
-            <button className="button">Comment</button>
+            <label htmlFor="comment">Add new comment</label>
+            <input
+              placeholder="new comment here"
+              id="comment"
+              value={this.state.comment}
+              onChange={this.handleOnChange}
+            />
+            <button className="button" onClick={() => this.handleOnComment(id)}>
+              Comment
+            </button>
           </div>
           <div className="comment-list">
             <h1>Comment List</h1>
@@ -188,6 +216,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   deleteBlog: (id) => dispatch(deletePost(id)),
   updateBlog: (id, data) => dispatch(updatePost(id, data)),
+  createNewComment: (id, comment) => dispatch(addNewComment(id, comment)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailPost);

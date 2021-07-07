@@ -38,7 +38,6 @@ export async function authLogin(token) {
  */
 export async function addNewPost(data) {
   const userToken = getAccessToken();
-  console.log(userToken);
   const url = `${api.endpoints.posts}`;
   const response = await http.post(url, data, {
     headers: {
@@ -62,6 +61,11 @@ export async function fetchPostById(postId) {
   return response;
 }
 
+/**
+ * function to search blogs by title
+ * @param {*} searchKey 
+ * @returns 
+ */
 export async function searchBlog(searchKey) {
   const url = `${api.endpoints.posts}?searchKey=${searchKey}`;
   const response = await http.get(url);
@@ -106,15 +110,12 @@ export async function deletePost(postId) {
 }
 
 /**
- *Function to create new post
- *
- * @export
+ *Function to add new comment
  * @param {*} data
  */
-export async function addNewComment(id,data) {
+export async function addNewComment(postId,data) {
   const userToken = getAccessToken();
-  console.log(userToken);
-  const url = `${api.endpoints.posts}`;
+  const url = `${api.endpoints.posts}/${postId}/${api.endpoints.comments}`;
   const response = await http.post(url, data, {
     headers: {
       Authorization: `Bearer ${userToken}`,
