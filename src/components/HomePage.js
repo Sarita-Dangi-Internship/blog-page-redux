@@ -28,18 +28,6 @@ class HomePage extends Component {
   };
 
   handleOnSave = async () => {
-    // this.props
-    //   .addNewPost(this.state.title, this.state.description)
-    //   .then((data) => {
-    //     this.setState({
-    //       title: data.title,
-    //       description: data.description,
-    //       // users: { id: this.props.userData.id},
-    //     });
-    //     console.log("data", data);
-    //   })
-    //   .catch((error) => console.log(error));
-
     const data = {
       title: this.state.title,
       description: this.state.description,
@@ -148,6 +136,7 @@ class HomePage extends Component {
                         title: blog.title,
                         user: blog.users.name,
                         description: blog.description,
+                        userId: blog.users._id,
                       },
                     })
                   }
