@@ -1,8 +1,10 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import * as blogService from "../services/blogs";
+import { deletePost } from "../actions/actions";
+import { connect } from "react-redux";
 import NavBar from "./NavBar";
 
-export default class DetailPost extends Component {
+class DetailPost extends Component {
   state = {
     comments: [],
     iseditMode: false,
@@ -28,6 +30,17 @@ export default class DetailPost extends Component {
   handleOnChange = (event) => {
     this.setState({ [event.target.id]: event.target.value });
   };
+
+  handleOnDelete = async (id) => {
+    try {
+      const response = await this.props.deleteBlog(id);
+      this.props.history.push("/");
+      console.log(response);
+    } catch (error) {
+      console.log("error");
+    }
+  };
+  
 
   /**
    * Function to get list of all blogs
@@ -58,7 +71,7 @@ export default class DetailPost extends Component {
                 <span>
                   <i
                     className="fas fa-trash"
-                    onClick={() => this.handleOnDelete(id)}
+                    onClick={()=>this.handleOnDelete(id)}
                   ></i>
                 </span>
                 <span>
@@ -108,8 +121,8 @@ export default class DetailPost extends Component {
             <div key="comment.id" className="blog-post">
               {this.state.comments.length > 0 ? (
                 this.state.comments.map((comment) => (
-                  <>
-                    <p className="comment-description" key={comment.id}>
+                  <div key={comment.id}>
+                    <p className="comment-description">
                       {comment.description}{" "}
                       <span className="user-name">{comment.users.name}</span>
                     </p>
@@ -121,7 +134,7 @@ export default class DetailPost extends Component {
                         <i className="fas fa-pen"></i>
                       </span>
                     </div>
-                  </>
+                  </div>
                 ))
               ) : (
                 <p>No comments to display</p>
@@ -144,3 +157,17 @@ export default class DetailPost extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    blogs: state.auth.blogs,
+    userData: state.auth.userData,
+    isSignedIn: state.auth.isSignedIn,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  deleteBlog: (id) => dispatch(deletePost(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DetailPost);
