@@ -5,6 +5,9 @@ export const signIn = () => {
   return {
     type: actions.SIGN_IN,
     // payload: id,
+    // payload:history.push("/")
+
+
   };
 };
 
@@ -122,8 +125,26 @@ export const updateComment = (id, data) => async (dispatch) => {
   }
 };
 
-export const increment = () => {
-  return {
-    type: actions.INCREMENT,
-  };
+export const getProfile = (id) => async (dispatch) => {
+  try {
+    const response = await blogService.getUserProfile(id);
+    dispatch({ type: actions.GET_USER_PROFILE, payload: response.data.data });
+  } catch (error) {
+    console.log("error");
+  }
+};
+
+export const updateUserProfile = (id, data) => async (dispatch) => {
+  try {
+    const res = await blogService.updateUserProfile(id, data);
+
+    dispatch({
+      type: actions.UPDATE_USER_PROFILE,
+      payload: data,
+    });
+
+    return Promise.resolve(res.data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
 };

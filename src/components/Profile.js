@@ -1,42 +1,109 @@
 import React, { Component } from "react";
+import { updateUserProfile, getProfile} from "../actions/actions";
+import { connect } from "react-redux";
 
-export default class Profile extends Component {
+class Profile extends Component {
+  state = {
+    name: "",
+    email: "",
+    phoneNumber: "",
+    address: "",
+  };
+
+  componentDidMount = () => {
+    this.fetchUserProfile(this.props.userData.id);
+  }
+  handleOnChange = (event) => {
+    this.setState({ [event.target.id]: event.target.value });
+    console.log("profile", event.target.value);
+  };
+
+  handleOnSubmit = async (id) => {
+
+    const data = {
+      name: this.state.name,
+      email: this.state.email,
+      phoneNumber: this.state.phoneNumber,
+      address: this.state.address,
+    };
+    try {
+      const response = await this.props.updateUser(id, data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  fetchUserProfile = async (id) => {
+    try {
+      const response = await this.props.getUser(id);
+      console.log("profile data",response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   render() {
+    const { userData, profile } = this.props;
+    console.log("profile array", profile);
     return (
       <div className="profile">
         <h1 className="profile__title">Edit your profile</h1>
-        <form>
-          <label for="name"> Name</label>{" "}
-          <input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Your name..."
-          />
-          <label for="email">Email</label>
-          <input
-            type="email"
-            id="emial"
-            name="email"
-            placeholder="Your email..."
-          />
-          <label for="phonenumber">Phone Number</label>
-          <input
-            type="number"
-            id="phonenumber"
-            name="phonenumber"
-            placeholder="Your phone number..."
-          />
-          <label for="address">Address</label>
-          <input
-            type="text"
-            id="address"
-            name="address"
-            placeholder="adress.."
-          />
-          <input type="submit" value="Submit" />
-        </form>
+        <label htmlFor="name"> Name</label>{" "}
+        <input
+          type="text"
+          id="name"
+          name="name"
+          defaultValue={userData.name}
+          onChange={this.handleOnChange}
+        />
+        <label htmlFor="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          defaultValue={userData.email}
+          onChange={this.handleOnChange}
+        />
+        <label htmlFor="phonenumber">Phone Number</label>
+        <input
+          type="tel"
+          id="phonenumber"
+          name="phonenumber"
+          value={this.state.phoneNumber}
+          onChange={this.handleOnChange}
+        />
+        <label htmlFor="address">Address</label>
+        <input
+          type="text"
+          id="address"
+          name="address"
+          value={this.state.address}
+          onChange={this.handleOnChange}
+        />
+        <button
+          className="button"
+          type="submit"
+          onClick={() => this.handleOnSubmit(userData.id)}
+        >
+          Submit
+        </button>
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    userData: state.auth.userData,
+    profile: state.auth.profile,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getUser: (id) => dispatch(getProfile(id)),
+    updateUser: (id, data) => dispatch(updateUserProfile(id, data)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

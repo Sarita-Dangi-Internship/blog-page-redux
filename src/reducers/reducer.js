@@ -6,6 +6,8 @@ const initialState = {
   searchInput: null,
   blogs: [],
   comments: [],
+  profile: [],
+
   increment: 0,
 };
 
@@ -43,9 +45,15 @@ export default (state = initialState, action) => {
 
     case actions.UPDATE_COMMENT:
       return { ...state };
+    
+    case actions.GET_USER_PROFILE:
+      return { ...state, profile: action.payload };
+    
+    case actions.UPDATE_USER_PROFILE:
+      return { ...state };
 
-    case actions.INCREMENT:
-      return { increment: state.increment + 1 };
+    // case actions.INCREMENT:
+    //   return { increment: state.increment + 1 };
 
     default:
       return state;
