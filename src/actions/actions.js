@@ -1,6 +1,5 @@
 import * as actions from "../constants/ActionTypes";
 import * as blogService from "../services/blogs";
-import { _COMMENTS } from './../constants/ActionTypes';
 
 export const signIn = () => {
   return {
@@ -92,6 +91,34 @@ export const deletePost = (id) => async (dispatch) => {
     });
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const deleteComment = (id) => async (dispatch) => {
+  try {
+    await blogService.deleteComment(id);
+
+    dispatch({
+      type: actions.DELETE_COMMENT,
+      payload: id,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const updateComment = (id, data) => async (dispatch) => {
+  try {
+    const res = await blogService.updateComment(id, data);
+
+    dispatch({
+      type: actions.UPDATE_COMMENT,
+      payload: data,
+    });
+
+    return Promise.resolve(res.data);
+  } catch (err) {
+    return Promise.reject(err);
   }
 };
 

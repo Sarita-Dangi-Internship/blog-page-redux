@@ -75,11 +75,8 @@ export async function searchBlog(searchKey) {
 
 /**
  *Function to edit post
- *
- * @export
  * @param {*} postId
  * @param {*} data
- * @return {*}
  */
 export async function updatePost(postId, data) {
   const userToken = getAccessToken();
@@ -122,5 +119,38 @@ export async function addNewComment(postId,data) {
     },
   });
 
+  return response;
+}
+
+/**
+ *Function to delete comment
+ */
+export async function deleteComment(commentId) {
+  const userToken = getAccessToken();
+
+  const url = `${api.endpoints.comments}/${commentId}`;
+  const response = await http.delete(url, {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  });
+
+  return response;
+}
+
+/**
+ *Function to edit comment
+ * @param {*} commentId
+ * @param {*} data
+ */
+export async function updateComment(commentId, data) {
+  const userToken = getAccessToken();
+
+  const url = `${api.endpoints.comments}/${commentId}`;
+  const response = await http.put(url, data, {
+    headers: {
+      Authorization: `Bearer ${userToken}`,
+    },
+  });
   return response;
 }

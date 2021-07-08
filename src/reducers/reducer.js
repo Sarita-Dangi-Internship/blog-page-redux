@@ -1,5 +1,4 @@
 import * as actions from "../constants/ActionTypes";
-import { browserHistory } from "react-router";
 
 const initialState = {
   isSignedIn: false,
@@ -29,16 +28,22 @@ export default (state = initialState, action) => {
 
     case actions.ADD_NEW_POST:
       return { ...state, blogs: [...state.blogs, action.payload] };
-    
+
     case actions.ADD_NEW_COMMENT:
       return { ...state, blogs: [...state.blogs, action.payload] };
 
     case actions.UPDATE_POST:
       return { ...state, blogs: [...state.blogs, ...action.payload] };
-    
+
     case actions.DELETE_POST:
       return { ...state };
-    
+
+    case actions.DELETE_COMMENT:
+      return { ...state };
+
+    case actions.UPDATE_COMMENT:
+      return { ...state };
+
     case actions.INCREMENT:
       return { increment: state.increment + 1 };
 

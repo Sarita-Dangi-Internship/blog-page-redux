@@ -1,6 +1,12 @@
 import { Component } from "react";
 import * as blogService from "../services/blogs";
-import { deletePost, updatePost, addNewComment } from "../actions/actions";
+import {
+  deletePost,
+  updatePost,
+  addNewComment,
+  deleteComment,
+  updateComment,
+} from "../actions/actions";
 import { connect } from "react-redux";
 import NavBar from "./NavBar";
 
@@ -8,7 +14,8 @@ class DetailPost extends Component {
   state = {
     comments: [],
     comment: "",
-    iseditMode: false,
+    postEdit: false,
+    commentEdit: false,
     title: "",
     description: "",
   };
@@ -17,12 +24,19 @@ class DetailPost extends Component {
     this.fetchComments(this.props.history.location.state.id);
   }
 
-  handleOnEdit = () => {
-    this.setState({ isEditMode: true });
+  handlePostEdit = () => {
+    this.setState({ postEdit: true });
   };
 
-  handleOnCancel = () => {
-    this.setState({ isEditMode: false });
+  handlePostCancel = (id) => {
+    this.setState({ postEdit: false });
+  };
+  handleCommentEdit = (id) => {
+    this.setState({ commentEdit: true });
+  };
+
+  handleCommentCancel = (id) => {
+    this.setState({ commentEdit: false });
   };
 
   handleOnChange = (event) => {
@@ -30,7 +44,7 @@ class DetailPost extends Component {
     console.log("update", event.target.value);
   };
 
-  handleOnUpdate = async (id) => {
+  handlePostUpdate = async (id) => {
     const data = {
       title: this.state.title,
       description: this.state.description,
@@ -45,10 +59,10 @@ class DetailPost extends Component {
     } catch (error) {
       console.log("error");
     }
-    this.setState({ isEditMode: false });
+    this.setState({ postEdit: false });
   };
 
-  handleOnDelete = async (id) => {
+  handlePostDelete = async (id) => {
     try {
       const response = await this.props.deleteBlog(id);
       this.props.history.push("/");
@@ -91,6 +105,32 @@ class DetailPost extends Component {
     this.fetchComments(this.props.history.location.state.id);
   };
 
+  handleCommentDelete = async (id) => {
+    try {
+      const response = await this.props.removeComment(id);
+      console.log(response);
+    } catch (error) {
+      console.log("error");
+    }
+    this.fetchComments(this.props.history.location.state.id);
+  };
+
+  handleCommentUpdate = async (id) => {
+    const data = {
+      description: this.state.comment,
+    };
+
+    try {
+      const response = await this.props.editComment(id, data);
+      console.log(response);
+    } catch (error) {
+      console.log("error");
+    }
+    this.setState({ commentEdit: false });
+        this.fetchComments(this.props.history.location.state.id);
+
+  };
+
   render() {
     const { id, title, user, description, userId } =
       this.props.history.location.state;
@@ -99,7 +139,7 @@ class DetailPost extends Component {
       <>
         <NavBar />
         <div className="container">
-          {!this.state.isEditMode ? (
+          {!this.state.postEdit ? (
             <div className="blog-post">
               <h1 className="post-title"> {title}</h1>
               <span className="user-name"> {user}</span>
@@ -110,13 +150,13 @@ class DetailPost extends Component {
                   <span>
                     <i
                       className="fas fa-trash"
-                      onClick={() => this.handleOnDelete(id)}
+                      onClick={() => this.handlePostDelete(id)}
                     ></i>
                   </span>
                   <span>
                     <i
                       className="fas fa-pen"
-                      onClick={() => this.handleOnEdit(id)}
+                      onClick={() => this.handlePostEdit(id)}
                     ></i>
                   </span>
                 </div>
@@ -138,13 +178,13 @@ class DetailPost extends Component {
               />
               <button
                 className="button"
-                onClick={() => this.handleOnUpdate(id)}
+                onClick={() => this.handlePostUpdate(id)}
               >
                 Update
               </button>
               <button
                 className="button"
-                onClick={() => this.handleOnCancel(id)}
+                onClick={() => this.handlePostCancel(id)}
               >
                 Cancel
               </button>
@@ -168,19 +208,49 @@ class DetailPost extends Component {
             <div key="comment.id" className="blog-post">
               {this.state.comments.length > 0 ? (
                 this.state.comments.map((comment) => (
-                  <div key={comment.id}>
+                  <div key={comment._id}>
                     <p className="comment-description">
                       {comment.description}{" "}
                       <span className="user-name">{comment.users.name}</span>
                     </p>
                     <div className="icons">
                       <span>
-                        <i className="fas fa-trash"></i>
+                        <i
+                          className="fas fa-trash"
+                          onClick={() => this.handleCommentDelete(comment._id)}
+                        ></i>
                       </span>
                       <span>
-                        <i className="fas fa-pen"></i>
+                        <i
+                          className="fas fa-pen"
+                          onClick={() => this.handleCommentEdit(comment._id)}
+                        ></i>
                       </span>
                     </div>
+                    {this.state.commentEdit ? (
+                      <div>
+                        <label htmlFor="comment">description</label>
+                        <input
+                          id="comment"
+                          value={this.state.comment}
+                          onChange={this.handleOnChange}
+                        />
+                        <button
+                          className="button"
+                          onClick={() => this.handleCommentUpdate(comment._id)}
+                        >
+                          Update
+                        </button>
+                        <button
+                          className="button"
+                          onClick={() => this.handleCommentCancel(comment._id)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 ))
               ) : (
@@ -188,12 +258,7 @@ class DetailPost extends Component {
               )}
             </div>
           </div>
-          <div>
-            <h4>Description</h4>
-            <input></input>
-            <button className="button">Update</button>
-            <button className="button">Cancel</button>
-          </div>
+
           <div>
             <h4>Reply</h4>
             <input></input>
@@ -217,6 +282,8 @@ const mapDispatchToProps = (dispatch) => ({
   deleteBlog: (id) => dispatch(deletePost(id)),
   updateBlog: (id, data) => dispatch(updatePost(id, data)),
   createNewComment: (id, comment) => dispatch(addNewComment(id, comment)),
+  removeComment: (id) => dispatch(deleteComment(id)),
+  editComment: (id, data) => dispatch(updateComment(id, data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailPost);
