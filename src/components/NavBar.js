@@ -12,13 +12,18 @@ class NavBar extends Component {
         <h1 className="navbar__header">Blog Post</h1>
         <div className="navbar__login">
           {isSignedIn ? (
-            <Link to="/logout">
-              <button onClick={() => this.props.signOut()}>Logout</button>
-            </Link>
+            <>
+              <Link to="/logout">
+                <button onClick={() => this.props.signOut()}>Logout</button>
+              </Link>
+              <Link to="/profile">
+                <button>View Profile</button>
+              </Link>
+            </>
           ) : (
             <>
               <Link to="/login">
-                <button onClick={() => this.props.signIn()}>
+                <button onClick={() => this.props.login()}>
                   Login/signup
                 </button>
               </Link>
@@ -50,10 +55,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = () => {
+const mapDispatchToProps = (dispatch) => {
   return {
     signIn,
     signOut,
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps())(NavBar);
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
