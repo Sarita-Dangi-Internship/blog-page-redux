@@ -25,6 +25,7 @@ class Login extends Component {
     };
 
     authLogin();
+    if (this.props.userData.name !== null) this.props.history.push("/");
   };
 
   onFailure = (response) => {
@@ -45,7 +46,6 @@ class Login extends Component {
             isSignedIn={true}
           />
         </div>
-        <button onClick={() => this.props.increment()}>CLick</button>
       </>
     );
   }
@@ -53,11 +53,9 @@ class Login extends Component {
 
 const mapStateToProps = (state) => ({
   userData: state.auth.userData,
-  increment: state.auth.increment,
 });
 const mapDispatchToProps = () => {
   return {
-    increment,
     updateUserData,
   };
 };
