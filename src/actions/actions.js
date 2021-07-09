@@ -1,13 +1,10 @@
 import * as actions from "../constants/ActionTypes";
 import * as blogService from "../services/blogs";
+import { GET_COMMENTS } from './../constants/ActionTypes';
 
 export const signIn = () => {
   return {
     type: actions.SIGN_IN,
-    // payload: id,
-    // payload:history.push("/")
-
-
   };
 };
 
@@ -33,6 +30,15 @@ export const fetchBlogs = () => async (dispatch) => {
   try {
     const response = await blogService.fetchPosts();
     dispatch({ type: actions.FETCH_BLOGS, payload: response.data.data });
+  } catch (error) {
+    console.log("error");
+  }
+};
+
+export const fetchBlogById = (id) => async (dispatch) => {
+  try {
+    const response = await blogService.fetchPostById(id);
+    dispatch({ type: actions.GET_COMMENTS, payload: response.data.data.comments});
   } catch (error) {
     console.log("error");
   }
