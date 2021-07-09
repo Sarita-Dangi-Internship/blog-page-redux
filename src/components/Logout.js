@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import { GoogleLogout } from "react-google-login";
-import {
-  deleteAccessToken
-} from "../utils/token";
+import { deleteAccessToken } from "../utils/token";
+import { deleteUserName, deleteUserImage } from "../utils/userdata";
 
 export default class Logout extends Component {
   onSuccess = () => {
-    deleteAccessToken("")
+    deleteAccessToken();
+    deleteUserImage();
+    deleteUserName();
     alert("Logged out");
+    this.props.history.push("/");
   };
   render() {
     return (

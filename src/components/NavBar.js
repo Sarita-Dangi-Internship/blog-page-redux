@@ -1,20 +1,28 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+import { getAccessToken, setAccessToken } from "../utils/token";
+import { getUserName, getUserImage } from "../utils/userdata";
 import { signIn, signOut } from "../actions/actions";
 
 class NavBar extends Component {
+
   render() {
+    const token = getAccessToken();
+    const name = getUserName();
+    const image = getUserImage();
     const { isSignedIn, userData } = this.props;
 
     return (
       <div className="navbar">
         <h1 className="navbar__header">Blog Post</h1>
         <div className="navbar__login">
-          {isSignedIn ? (
+          {token ? (
             <>
               <Link to="/logout">
-                <button onClick={() => this.props.signOut()}>Logout</button>
+                <button
+                  // onClick={() => this.props.signOut()}
+                >Logout</button>
               </Link>
               <Link to="/profile">
                 <button>View Profile</button>
@@ -23,21 +31,23 @@ class NavBar extends Component {
           ) : (
             <>
               <Link to="/login">
-                <button onClick={() => this.props.login()}>
+                  <button
+                    // onClick={() => this.props.login()}
+                  >
                   Login/signup
                 </button>
               </Link>
             </>
           )}
 
-          {isSignedIn ? (
+          {token && userData ? (
             <div className="user">
               <img
-                src={userData.image}
+                src={image}
                 alt="user-image"
                 className="user-image"
               />
-              <h1 className="user-name">{userData.name}</h1>
+              <h1 className="user-name">{name}</h1>
             </div>
           ) : (
             <></>
@@ -57,8 +67,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signIn,
+    login:()=>dispatch(signIn()),
     signOut,
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NavBar));

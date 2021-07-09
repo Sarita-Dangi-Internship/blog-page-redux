@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getAccessToken, setAccessToken } from "../utils/token";
+import { setUserName, setUserImage } from "../utils/userdata";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import { updateUserData, increment } from "../actions/actions";
 
@@ -17,6 +18,8 @@ class Login extends Component {
         const data = res.data.data;
         console.log("login auth", data);
         setAccessToken(data.accessToken);
+        setUserImage(data.image);
+        setUserName(data.name);
         console.log("token", getAccessToken());
         this.props.updateUserData(data);
       } catch (error) {
@@ -25,7 +28,12 @@ class Login extends Component {
     };
 
     authLogin();
-    if (this.props.userData.name !== null) this.props.history.push("/");
+    if (
+      this.props.userData.name !== null &&
+      this.props.userData.email !== null &&
+      this.props.userData.name !== null
+    )
+      this.props.history.push("/");
   };
 
   onFailure = (response) => {
@@ -35,8 +43,8 @@ class Login extends Component {
   render() {
     console.log("render userdata", this.props.userData);
     return (
-      <>
-        <div>
+      <div className="login-page">
+        <div className="google-login">
           <GoogleLogin
             clientId="1058823769266-758kalf90cmirensqppf8qt6rfebpvjs.apps.googleusercontent.com"
             buttonText="Login with google"
@@ -46,7 +54,7 @@ class Login extends Component {
             isSignedIn={true}
           />
         </div>
-      </>
+      </div>
     );
   }
 }
