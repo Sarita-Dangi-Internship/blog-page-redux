@@ -13,7 +13,7 @@ class Profile extends Component {
   };
 
   componentDidMount = () => {
-    this.props.getUser(this.props.userData.id);
+    this.props.getUser(getUserId());
 
   };
   handleOnChange = (event) => {
