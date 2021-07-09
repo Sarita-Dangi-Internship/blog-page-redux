@@ -40,7 +40,7 @@ class NavBar extends Component {
             </>
           )}
 
-          {token && userData ? (
+          {token? (
             <div className="user">
               <img
                 src={image}
