@@ -65,13 +65,12 @@ class HomePage extends Component {
 
   render() {
     const { isCreatePost, title, description } = this.state;
-    const { isSignedIn } = this.props;
-    console.log("blogs", this.props.blogs)
+    const token = getAccessToken();
     return (
       <>
         <NavBar />
         <div className="container">
-          {isSignedIn ? (
+          {token ? (
             isCreatePost ? (
               <div className="blog-post">
                 <label htmlFor="title">Title</label>

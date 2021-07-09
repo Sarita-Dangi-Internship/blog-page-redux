@@ -1,5 +1,6 @@
 import { Component } from "react";
 import * as blogService from "../services/blogs";
+import { connect } from "react-redux";
 import {
   deletePost,
   updatePost,
@@ -7,7 +8,9 @@ import {
   deleteComment,
   updateComment,
 } from "../actions/actions";
-import { connect } from "react-redux";
+import { getAccessToken } from "../utils/token";
+import { getUserId } from "../utils/userdata";
+
 import NavBar from "./NavBar";
 
 class DetailPost extends Component {
@@ -127,14 +130,16 @@ class DetailPost extends Component {
       console.log("error");
     }
     this.setState({ commentEdit: false });
-        this.fetchComments(this.props.history.location.state.id);
-
+    this.fetchComments(this.props.history.location.state.id);
   };
 
   render() {
     const { id, title, user, description, userId } =
       this.props.history.location.state;
     const { isSignedIn, userData } = this.props;
+    const token = getAccessToken();
+    const userid = getUserId();
+
     return (
       <>
         <NavBar />
@@ -145,7 +150,7 @@ class DetailPost extends Component {
               <span className="user-name"> {user}</span>
               <p className="post-description">Description: {description}:</p>
 
-              {isSignedIn && userId === userData.id && (
+              {token && userId === userid && (
                 <div className="icons">
                   <span>
                     <i
@@ -214,19 +219,26 @@ class DetailPost extends Component {
                       <span className="user-name">{comment.users.name}</span>
                     </p>
                     <div className="icons">
-                      <span>
-                        <i
-                          className="fas fa-trash"
-                          onClick={() => this.handleCommentDelete(comment._id)}
-                        ></i>
-                      </span>
+                      {token && userId === userid && (
+                        <span>
+                          <i
+                            className="fas fa-trash"
+                            onClick={() =>
+                              this.handleCommentDelete(comment._id)
+                            }
+                          ></i>
+                        </span>
+                      )}
+                      {/* {{ comment.users._id } === userId && */}
                       <span>
                         <i
                           className="fas fa-pen"
                           onClick={() => this.handleCommentEdit(comment._id)}
                         ></i>
                       </span>
+                      {/* } */}
                     </div>
+                    {/* {{ comment.users._id } === userId && */}
                     {this.state.commentEdit ? (
                       <div>
                         <label htmlFor="comment">description</label>
@@ -259,11 +271,11 @@ class DetailPost extends Component {
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <h4>Reply</h4>
             <input></input>
             <button className="button">Reply</button>
-          </div>
+          </div> */}
         </div>
       </>
     );
