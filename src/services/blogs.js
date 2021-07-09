@@ -50,9 +50,7 @@ export async function addNewPost(data) {
 
 /**
  *Function to get post by id
- * @export
  * @param {*} postId
- * @return {*}
  */
 export async function fetchPostById(postId) {
   const url = `${api.endpoints.posts}/${postId}`;
@@ -105,6 +103,7 @@ export async function deletePost(postId) {
 
   return response;
 }
+
 
 /**
  *Function to add new comment
