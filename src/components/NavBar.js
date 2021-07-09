@@ -60,8 +60,8 @@ class NavBar extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    isSignedIn: state.auth.isSignedIn,
-    userData: state.auth.userData,
+    isSignedIn: state.reducer.isSignedIn,
+    userData: state.reducer.userData,
   };
 };
 

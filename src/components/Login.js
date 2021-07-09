@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getAccessToken, setAccessToken } from "../utils/token";
-import { setUserName, setUserImage } from "../utils/userdata";
+import {
+  setUserName,
+  setUserImage,
+  setUserEmail,
+  setUserId,
+} from "../utils/userdata";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import { updateUserData, increment } from "../actions/actions";
 
@@ -9,18 +14,17 @@ import * as todoService from "../services/blogs";
 
 class Login extends Component {
   onSuccess = (response) => {
-    console.log("login success", response);
     const authLogin = async () => {
       try {
         const res = await todoService.authLogin({
           token: response.tokenId,
         });
         const data = res.data.data;
-        console.log("login auth", data);
         setAccessToken(data.accessToken);
         setUserImage(data.image);
         setUserName(data.name);
-        console.log("token", getAccessToken());
+        setUserId(data.id);
+        setUserEmail(data.email);
         this.props.updateUserData(data);
       } catch (error) {
         console.log(error);
@@ -28,12 +32,7 @@ class Login extends Component {
     };
 
     authLogin();
-    if (
-      this.props.userData.name !== null &&
-      this.props.userData.email !== null &&
-      this.props.userData.name !== null
-    )
-      this.props.history.push("/");
+    if (this.props.userData.name !== null) this.props.history.push("/");
   };
 
   onFailure = (response) => {
@@ -60,7 +59,7 @@ class Login extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  userData: state.auth.userData,
+  userData: state.reducer.userData,
 });
 const mapDispatchToProps = () => {
   return {

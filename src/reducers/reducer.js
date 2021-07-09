@@ -50,7 +50,7 @@ export default (state = initialState, action) => {
       return { ...state, profile: action.payload };
     
     case actions.UPDATE_USER_PROFILE:
-      return { ...state };
+      return { ...state, profile: action.payload };
 
     // case actions.INCREMENT:
     //   return { increment: state.increment + 1 };

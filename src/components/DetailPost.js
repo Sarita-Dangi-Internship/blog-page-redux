@@ -284,9 +284,9 @@ class DetailPost extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    blogs: state.auth.blogs,
-    userData: state.auth.userData,
-    isSignedIn: state.auth.isSignedIn,
+    blogs: state.reducer.blogs,
+    userData: state.reducer.userData,
+    isSignedIn: state.reducer.isSignedIn,
   };
 };
 

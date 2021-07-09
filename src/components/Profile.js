@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { updateUserProfile, getProfile} from "../actions/actions";
+import { updateUserProfile, getProfile } from "../actions/actions";
 import { connect } from "react-redux";
+import { getUserName, getUserImage, getUserId, getUserEmail } from "../utils/userdata";
+
 
 class Profile extends Component {
   state = {
@@ -11,15 +13,15 @@ class Profile extends Component {
   };
 
   componentDidMount = () => {
-    this.fetchUserProfile(this.props.userData.id);
-  }
+    this.props.getUser(this.props.userData.id);
+
+  };
   handleOnChange = (event) => {
     this.setState({ [event.target.id]: event.target.value });
     console.log("profile", event.target.value);
   };
 
   handleOnSubmit = async (id) => {
-
     const data = {
       name: this.state.name,
       email: this.state.email,
@@ -37,14 +39,17 @@ class Profile extends Component {
   fetchUserProfile = async (id) => {
     try {
       const response = await this.props.getUser(id);
-      console.log("profile data",response);
+      console.log("profile data", response);
     } catch (error) {
       console.log(error);
     }
   };
+
   render() {
     const { userData, profile } = this.props;
     console.log("profile array", profile);
+    const name = getUserName();
+    const id = getUserId();
     return (
       <div className="profile">
         <h1 className="profile__title">Edit your profile</h1>
@@ -53,7 +58,7 @@ class Profile extends Component {
           type="text"
           id="name"
           name="name"
-          defaultValue={userData.name}
+          defaultValue={name}
           onChange={this.handleOnChange}
         />
         <label htmlFor="email">Email</label>
@@ -61,14 +66,14 @@ class Profile extends Component {
           type="email"
           id="email"
           name="email"
-          defaultValue={userData.email}
+         value={this.state.email}
           onChange={this.handleOnChange}
         />
-        <label htmlFor="phonenumber">Phone Number</label>
+        <label htmlFor="phoneNumber">Phone Number</label>
         <input
-          type="tel"
-          id="phonenumber"
-          name="phonenumber"
+          type="number"
+          id="phoneNumber"
+          name="phoneNumber"
           value={this.state.phoneNumber}
           onChange={this.handleOnChange}
         />
@@ -83,7 +88,7 @@ class Profile extends Component {
         <button
           className="button"
           type="submit"
-          onClick={() => this.handleOnSubmit(userData.id)}
+          onClick={() => this.handleOnSubmit(id)}
         >
           Submit
         </button>
@@ -94,8 +99,8 @@ class Profile extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    userData: state.auth.userData,
-    profile: state.auth.profile,
+    userData: state.reducer.userData,
+    profile: state.reducer.profile,
   };
 };
 
