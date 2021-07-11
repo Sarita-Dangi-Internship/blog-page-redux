@@ -195,19 +195,23 @@ class DetailPost extends Component {
               </button>
             </div>
           )}
-
-          <div>
-            <label htmlFor="comment">Add new comment</label>
-            <input
-              placeholder="new comment here"
-              id="comment"
-              value={this.state.comment}
-              onChange={this.handleOnChange}
-            />
-            <button className="button" onClick={() => this.handleOnComment(id)}>
-              Comment
-            </button>
-          </div>
+          {token && (
+            <div>
+              <label htmlFor="comment">Add new comment</label>
+              <input
+                placeholder="new comment here"
+                id="comment"
+                value={this.state.comment}
+                onChange={this.handleOnChange}
+              />
+              <button
+                className="button"
+                onClick={() => this.handleOnComment(id)}
+              >
+                Comment
+              </button>
+            </div>
+          )}
           <div className="comment-list">
             <h1>Comment List</h1>
             <div key="comment.id" className="blog-post">
@@ -219,50 +223,115 @@ class DetailPost extends Component {
                       <span className="user-name">{comment.users.name}</span>
                     </p>
                     <div className="icons">
-                      {token && userId === userid && (
-                        <span>
-                          <i
-                            className="fas fa-trash"
-                            onClick={() =>
-                              this.handleCommentDelete(comment._id)
-                            }
-                          ></i>
-                        </span>
+                      {token && userId === userid ? (
+                        <>
+                          <span>
+                            <i
+                              className="fas fa-trash"
+                              onClick={() =>
+                                this.handleCommentDelete(comment._id)
+                              }
+                            ></i>
+                          </span>
+                          {comment.users._id === userid ? (
+                            <>
+                              <span>
+                                <i
+                                  className="fas fa-pen"
+                                  onClick={() =>
+                                    this.handleCommentEdit(comment._id)
+                                  }
+                                ></i>
+                              </span>
+                              {this.state.commentEdit ? (
+                                <div>
+                                  <label htmlFor="comment">description</label>
+                                  <input
+                                    id="comment"
+                                    value={this.state.comment}
+                                    onChange={this.handleOnChange}
+                                  />
+                                  <button
+                                    className="button"
+                                    onClick={() =>
+                                      this.handleCommentUpdate(comment._id)
+                                    }
+                                  >
+                                    Update
+                                  </button>
+                                  <button
+                                    className="button"
+                                    onClick={() =>
+                                      this.handleCommentCancel(comment._id)
+                                    }
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              ) : (
+                                <></>
+                              )}
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          {userid === comment.users._id ? (
+                            <>
+                              {" "}
+                              <span>
+                                <i
+                                  className="fas fa-trash"
+                                  onClick={() =>
+                                    this.handleCommentDelete(comment._id)
+                                  }
+                                ></i>
+                              </span>
+                              <span>
+                                <i
+                                  className="fas fa-pen"
+                                  onClick={() =>
+                                    this.handleCommentEdit(comment._id)
+                                  }
+                                ></i>
+                              </span>
+                              {this.state.commentEdit ? (
+                                <div>
+                                  <label htmlFor="comment">description</label>
+                                  <input
+                                    id="comment"
+                                    value={this.state.comment}
+                                    onChange={this.handleOnChange}
+                                  />
+                                  <button
+                                    className="button"
+                                    onClick={() =>
+                                      this.handleCommentUpdate(comment._id)
+                                    }
+                                  >
+                                    Update
+                                  </button>
+                                  <button
+                                    className="button"
+                                    onClick={() =>
+                                      this.handleCommentCancel(comment._id)
+                                    }
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              ) : (
+                                <></>
+                              )}
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                        </>
                       )}
-                      {/* {{ comment.users._id } === userId && */}
-                      <span>
-                        <i
-                          className="fas fa-pen"
-                          onClick={() => this.handleCommentEdit(comment._id)}
-                        ></i>
-                      </span>
-                      {/* } */}
                     </div>
-                    {/* {{ comment.users._id } === userId && */}
-                    {this.state.commentEdit ? (
-                      <div>
-                        <label htmlFor="comment">description</label>
-                        <input
-                          id="comment"
-                          value={this.state.comment}
-                          onChange={this.handleOnChange}
-                        />
-                        <button
-                          className="button"
-                          onClick={() => this.handleCommentUpdate(comment._id)}
-                        >
-                          Update
-                        </button>
-                        <button
-                          className="button"
-                          onClick={() => this.handleCommentCancel(comment._id)}
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    ) : (
-                      <></>
-                    )}
                   </div>
                 ))
               ) : (
