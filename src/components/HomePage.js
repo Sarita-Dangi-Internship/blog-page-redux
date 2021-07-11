@@ -31,7 +31,7 @@ class HomePage extends Component {
     const data = {
       title: this.state.title,
       description: this.state.description,
-      users: { _id: this.props.userData.id },
+      users: { _id: getAccessToken() },
     };
 
     try {
