@@ -1,0 +1,14 @@
+export const SIGN_IN = "SIGN_IN";
+export const SIGN_OUT = "SIGN_OUT";
+export const USER_DATA = "USER_DATA";
+export const FETCH_BLOGS = "FETCH_BLOGS";
+export const POST_LOGIN = "POST_LOGIN";
+export const ADD_NEW_POST = "ADD_NEW_POST";
+export const UPDATE_POST = "UPDATE_POST";
+export const DELETE_POST = "DELETE_POST";
+export const GET_COMMENTS = "GET_COMMENTS";
+export const ADD_NEW_COMMENT = "ADD_NEW_COMMENT";
+export const UPDATE_COMMENT = "UPDATE_COMMENT";
+export const DELETE_COMMENT = "DELETE_COMMENT";
+export const GET_USER_PROFILE = "GET_USER_PROFILE";
+export const UPDATE_USER_PROFILE = "UPDATE_USER_PROFILE";

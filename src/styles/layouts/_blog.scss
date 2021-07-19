@@ -1,0 +1,222 @@
+$gray: #f2f4f7;
+$grayLighter: #e5e6e7;
+$blue: #1f75e6;
+$blueLight: #76a6e6c4;
+$grayDark: #afb0b4;
+$white: #fff;
+$yellow: #e2c234;
+$green: #338d33;
+$red: #ffff;
+
+%navigation-display {
+  display: inline-flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+}
+%checklist-display {
+  display: inline-flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.button {
+  border: 1px solid $white;
+  padding: 8px 10px;
+  background-color: $blue;
+  color: $white;
+  border-radius: 4px;
+}
+
+input {
+  border-radius: 3px;
+  width: 100%;
+  padding: 8px;
+  outline: none;
+  border: 1px solid $grayDark;
+  margin-bottom: 5px;
+}
+/**********
+ * navbar *
+ **********/
+.navbar {
+  display: flex;
+  background-color: $blue;
+  width: 100%;
+  padding: 10px 15px;
+  &__header {
+    @extend %navigation-display;
+    margin-right: auto;
+    background-color: $blueLight;
+    padding: 0px 8px;
+  }
+  &__login {
+    @extend %navigation-display;
+    margin-left: auto;
+    button {
+      border: 1px solid $white;
+      padding: 8px 10px;
+      background-color: transparent;
+      color: $white;
+      border-radius: 4px;
+    }
+    .user {
+      display: inline-flex;
+      align-items: center;
+      .user-image {
+        border-radius: 50%;
+        height: 35px;
+        width: 35px;
+      }
+    }
+  }
+}
+
+/**********************
+* main container box *
+ **********************/
+.container {
+  width: 100%;
+  padding: 0 15px;
+  background-color: $gray;
+  /**********
+ * search *
+ **********/
+  .search {
+    background-color: $white;
+    padding: 15px;
+    margin: 10px 0px;
+    input {
+      width: 100%;
+      padding: 8px 15px;
+      border: 1px solid $gray;
+      outline: none;
+    }
+  }
+  /***************
+ * create blog *
+ ***************/
+  .create-blog {
+    background-color: $white;
+    padding: 15px;
+    button {
+      background-color: $blue;
+      padding: 8px 15px;
+      border: none;
+      color: $white;
+    }
+  }
+  /***************
+ * blog-list   *
+ ***************/
+  .blog-list {
+    h3 {
+      background-color: $grayDark;
+      padding: 8px 15px;
+      border: none;
+      width: 135px;
+      border-radius: 4px;
+      span {
+        background-color: $blue;
+        padding: 0px 5px;
+        margin-left: 5px;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+.blog-post {
+  background-color: $white;
+  padding: 15px;
+  margin: 10px 0px;
+  line-height: 25px;
+  .post-title {
+    color: $grayDark;
+    display: inline-block;
+    padding-right: 5px;
+    font-size: 20px;
+  }
+  .user-name {
+    color: $white;
+    background-color: $yellow;
+    padding: 0px 4px;
+    border-radius: 4px;
+  }
+  .post-description,
+  comment-description {
+    font-size: 12px;
+  }
+  .detail-button {
+    border: 1px solid $white;
+    padding: 8px 10px;
+    background-color: $blue;
+    color: $white;
+    border-radius: 4px;
+  }
+}
+
+.profile {
+  border-radius: 5px;
+  padding: 20px;
+  .profile__title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
+    outline: none;
+  }
+
+  input[type="submit"] {
+    background-color: $blue;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+}
+
+.icons {
+  color: $grayDark;
+  font-size: 12px;
+  span {
+    padding: 10px;
+  }
+}
+
+.comment-list h1 {
+  color: $grayDark;
+  display: inline-block;
+  padding-right: 5px;
+  font-size: 20px;
+}
+
+.edit-input {
+  margin-left: 35px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.login-page {
+  background: url("../../images/city.jpg");
+  background-size: cover;
+  height: 100vh;
+  .google-login {
+    top: 50%;
+    position: relative;
+    margin: auto;
+    text-align: center;
+  }
+}
